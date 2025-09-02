@@ -1,3 +1,8 @@
+/*
+CREATE DATABASE sdet_first_database;
+*/
+
+/*
 CREATE TABLE IF NOT EXISTS sdet_automation_test_result (
     id SERIAL PRIMARY KEY,
     service TEXT NOT NULL,
@@ -25,3 +30,4 @@ CREATE TABLE IF NOT EXISTS sdet_automation_test_result (
     update_time TIMESTAMP DEFAULT NOW()
 
 );
+*/

@@ -1,5 +1,5 @@
-class AutomationTestResultConfig:
+class SDETDatabase:
     DB_HOST = 'db'
     DB_USER = 'sdet'
     DB_PASSWORD = '1234'
-    DB_NAME = 'sdet_automation_test_result'
+    DB_NAME = 'sdet_database'
