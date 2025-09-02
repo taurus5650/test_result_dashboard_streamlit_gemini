@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  postgres:
     image: postgres:15
     container_name: sdet_database_postgres
     restart: unless-stopped
@@ -12,8 +12,8 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - pg-data:/var/lib/postgresql/data
-
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
   dashboard:
     image: automation_test_result_dashboard_service:latest
     build:
@@ -21,7 +21,7 @@ services:
       dockerfile: deployment/Dockerfile
     container_name: automation_test_result_dashboard_service
     depends_on:
-      - db
+      - postgres
     environment:
       POSTGRES_DB: sdet_automation_test_result
       POSTGRES_USER: sdet
@@ -34,5 +34,5 @@ services:
     command: ['streamlit', 'run', 'run.py', '--server.port=8501', '--server.address=0.0.0.0']
 
 volumes:
-  pg-data:
-    name: pg-data
+  postgres_data:
+    name: postgres_data
