@@ -15,6 +15,7 @@ services:
       - pg-data:/var/lib/postgresql/data
 
   dashboard:
+    image: automation_test_result_dashboard_service:latest
     build:
       context: ..
       dockerfile: deployment/Dockerfile
