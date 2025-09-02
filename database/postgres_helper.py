@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from typing import Generator
+from contextlib import contextmanager
 
 
 class PostgresHelper:
@@ -11,7 +11,8 @@ class PostgresHelper:
         )
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
 
-    def get_session(self) -> Generator:
+    @contextmanager
+    def get_session(self):
         db = self.SessionLocal()
         try:
             yield db

@@ -1,9 +1,9 @@
 /*
-CREATE DATABASE sdet_first_database;
+CREATE DATABASE sdet_database;
 */
 
 /*
-CREATE TABLE IF NOT EXISTS sdet_automation_test_result (
+CREATE TABLE IF NOT EXISTS automation_test_result (
     id SERIAL PRIMARY KEY,
     service TEXT NOT NULL,
     service_team TEXT NOT NULL, -- The dev team
@@ -28,6 +28,5 @@ CREATE TABLE IF NOT EXISTS sdet_automation_test_result (
 
     create_time TIMESTAMP DEFAULT NOW(),
     update_time TIMESTAMP DEFAULT NOW()
-
 );
 */

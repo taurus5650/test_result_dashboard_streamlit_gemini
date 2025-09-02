@@ -2,7 +2,6 @@
 
 
 ```commandline
-~|⇒ docker exec -it sdet_database_postgres psql -U sdet -d postgres
+~|⇒ docker exec -it sdet_database psql -U sdet -d postgres
 postgres=# CREATE DATABASE sdet_database;
-CREATE DATABASE
 ```
