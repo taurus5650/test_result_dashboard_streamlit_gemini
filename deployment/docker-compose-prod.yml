@@ -14,6 +14,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U sdet -d sdet_database' ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
   dashboard:
     image: automation_test_result_dashboard_service:latest
     build:
@@ -23,10 +28,10 @@ services:
     depends_on:
       - postgres
     environment:
-      POSTGRES_DB: sdet_automation_test_result
+      POSTGRES_DB: sdet_database
       POSTGRES_USER: sdet
       POSTGRES_PASSWORD: 1234
-      POSTGRES_HOST: db
+      POSTGRES_HOST: postgres
     ports:
       - '8501:8501'
     volumes:
