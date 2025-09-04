@@ -8,7 +8,11 @@ class Business:
         self.db = PostgresSQLHelper(config=SDETDatabase)
 
     def get_all_service_teams(self) -> pandas.DataFrame:
-        sql = "SELECT DISTINCT service_team FROM automation_test_result ORDER BY service_team;"
+        sql = ("""
+            SELECT DISTINCT service_team 
+            FROM automation_test_result 
+            ORDER BY service_team DESC;
+        """)
         rows = self.db.execute(sql=sql, fetchall=True)
         return pandas.DataFrame(rows, columns=['service_team'])
 
