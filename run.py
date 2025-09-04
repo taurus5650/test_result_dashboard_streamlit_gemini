@@ -68,6 +68,8 @@ class StreamLitPage:
         with end_date:
             end_date = streamlit.date_input(label='End date', value='2025-09-03')  # self.common_value.today
 
+        expand_all = streamlit.checkbox(label='Expand Test Cases', value=False)
+
         dataframe = self.business.get_failure_details_by_team(
             service_team=service_team,
             start_date=start_date,
@@ -78,11 +80,31 @@ class StreamLitPage:
             streamlit.warning('No failure data found.')
             return
 
-        expand_all = streamlit.checkbox("Expand", value=False)
+        ai_team_summary = self.business.get_team_failure_ai_summary(
+            service_team=service_team,
+            start_date=start_date,
+            end_date=end_date
+        )
+
+        streamlit.subheader('AI Suggetions')
+
+        summary_text = f"""
+        Summary: {ai_team_summary['summary']}
+
+        Root Cause Breakdown: {ai_team_summary['root_cause_analysis']}
+
+        Suggestions:
+        {ai_team_summary['suggestions']}
+        """
+
+        streamlit.code(summary_text, language="markdown")
+
+        streamlit.subheader('Failure Details')
 
         for idx, row in dataframe.iterrows():
-            with streamlit.expander(label=f'❌     {row['case_name']} | {row['timestamp']}', expanded=expand_all):
+            with streamlit.expander(label=f'❌  {row['service']} | {row['case_name']} | {row['timestamp']}', expanded=expand_all):
                 streamlit.error(row['error_message'])
+                streamlit.code(row['traceback'])
 
     def main(self):
         self.sidebar()  # Load sidebar
