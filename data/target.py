@@ -3,7 +3,7 @@ from database.postgresql_helper import PostgresSQLHelper
 from database.config import SDETDatabase
 
 
-class Business:
+class Tartget:
     def __init__(self):
         self.db = PostgresSQLHelper(config=SDETDatabase)
 

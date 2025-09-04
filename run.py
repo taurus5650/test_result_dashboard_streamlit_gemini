@@ -1,13 +1,13 @@
 import streamlit
 import plotly.express as plotly
-from business import Business
+from data.target import Tartget
 import datetime
 
 
 class StreamLitPage:
 
     def __init__(self):
-        self.business = Business()
+        self.target = Tartget()
         streamlit.set_page_config(page_title='Dashboard', layout='wide')
         self.page_handlers = {
             "All Team Failure Case Summary": self.all_team_failure_case_summary,
@@ -35,7 +35,7 @@ class StreamLitPage:
         with end_date:
             end_date = streamlit.date_input(label='End date', value='2025-09-07')  # self.common_value.today
 
-        dataframe = self.business.get_failure_summary_grouped_by_service(start_date=start_date, end_date=end_date)
+        dataframe = self.target.get_failure_summary_grouped_by_service(start_date=start_date, end_date=end_date)
 
         if dataframe.empty:
             streamlit.warning('No failure data found.')
@@ -55,7 +55,7 @@ class StreamLitPage:
 
     def failure_insights(self):
 
-        all_team_dataframe = self.business.get_all_service_teams()
+        all_team_dataframe = self.target.get_all_service_teams()
         all_teams = all_team_dataframe['service_team'].tolist()
         service_team = streamlit.selectbox(
             label='service team',
@@ -70,7 +70,7 @@ class StreamLitPage:
 
         expand_all = streamlit.checkbox(label='Expand Test Cases', value=False)
 
-        dataframe = self.business.get_failure_details_by_team(
+        dataframe = self.target.get_failure_details_by_team(
             service_team=service_team,
             start_date=start_date,
             end_date=end_date
@@ -80,7 +80,7 @@ class StreamLitPage:
             streamlit.warning('No failure data found.')
             return
 
-        ai_team_summary = self.business.get_team_failure_ai_summary(
+        ai_team_summary = self.target.get_team_failure_ai_summary(
             service_team=service_team,
             start_date=start_date,
             end_date=end_date
