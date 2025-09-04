@@ -1,9 +1,10 @@
 import pandas
-from database.postgresql_helper import PostgresSQLHelper
+
 from database.config import SDETDatabase
+from database.postgresql_helper import PostgresSQLHelper
 
 
-class Tartget:
+class Target:
     def __init__(self):
         self.db = PostgresSQLHelper(config=SDETDatabase)
 
@@ -49,23 +50,4 @@ class Tartget:
         """)
         result = self.db.execute(sql=sql, params=(service_team, start_date, end_date), fetchall=True)
         return pandas.DataFrame(result, columns=['service_team', 'service', 'case_name', 'error_message', 'traceback', 'timestamp'])
-
-    def get_team_failure_ai_summary(self, service_team: str, start_date: str, end_date: str) -> dict:
-        failure_df = self.get_failure_details_by_team(service_team, start_date, end_date)
-        error_texts = failure_df['error_message'].tolist()
-
-        timeout_count = sum('timeout' in e.lower() for e in error_texts)
-        auth_count = sum('403' in e or '401' in e for e in error_texts)
-        total = len(error_texts)
-
-        return {
-            "summary": f"{total} test cases failed in total during the selected period.",
-            "root_cause_analysis": f"Timeout: {timeout_count} cases, Auth errors: {auth_count} cases.",
-            "suggestions": [
-                "Check backend service health and response times.",
-                "Add retry logic or increase timeout threshold.",
-                "Ensure valid auth token setup in test config."
-            ]
-        }
-
 

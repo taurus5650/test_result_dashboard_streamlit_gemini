@@ -1,14 +1,24 @@
-import streamlit
-import plotly.express as plotly
-from data.target import Tartget
 import datetime
+import os
+
+import plotly.express as plotly
+import streamlit
+from dotenv import load_dotenv
+
+from data.target import Target
+from llm.gemini_helper import GeminiHelper
 
 
 class StreamLitPage:
 
     def __init__(self):
-        self.target = Tartget()
         streamlit.set_page_config(page_title='Dashboard', layout='wide')
+
+        load_dotenv()
+        self.llm = GeminiHelper(api_key=os.getenv('GEMINI_API_KEY'))
+
+        self.target = Target()
+
         self.page_handlers = {
             "All Team Failure Case Summary": self.all_team_failure_case_summary,
             "Failure Insights": self.failure_insights
@@ -80,13 +90,11 @@ class StreamLitPage:
             streamlit.warning('No failure data found.')
             return
 
-        ai_team_summary = self.target.get_team_failure_ai_summary(
-            service_team=service_team,
-            start_date=start_date,
-            end_date=end_date
-        )
-
+        # AI Section
         streamlit.subheader('AI Suggetions')
+
+        error_list = dataframe['error_message'].tolist()
+        ai_team_summary = self.llm.anlayze_failure_reason(service_team=service_team, error_list=error_list)
 
         summary_text = f"""
         Summary: {ai_team_summary['summary']}
@@ -94,11 +102,11 @@ class StreamLitPage:
         Root Cause Breakdown: {ai_team_summary['root_cause_analysis']}
 
         Suggestions:
-        {ai_team_summary['suggestions']}
+        {chr(10).join([f"- {s}" for s in ai_team_summary['suggestions']])}
         """
-
         streamlit.code(summary_text, language="markdown")
 
+        # Test Case Section
         streamlit.subheader('Failure Details')
 
         for idx, row in dataframe.iterrows():
