@@ -5,6 +5,12 @@ import datetime
 import logging
 
 business = Business()
+streamlit.set_page_config(page_title='Dashboard', layout='wide')
+
+# region [Common]
+today = datetime.date.today()
+last_seven_day = today - datetime.timedelta(days=7)
+# endregion [Common]
 
 # region [Page Name Params]
 all_team_failure_case_summary = 'All Team Failure Case Summary'
@@ -23,12 +29,10 @@ page = streamlit.sidebar.radio(
 )
 # endregion [Sidebar]
 
-# region [Failure Count by Service Team]
+# region [All Team Failure Case Summary]
 if page == all_team_failure_case_summary:
 
     streamlit.header(all_team_failure_case_summary)
-    today = datetime.date.today()
-    last_seven_day = today - datetime.timedelta(days=7)
 
     stard_date, end_date = streamlit.columns(2)
 
@@ -38,6 +42,8 @@ if page == all_team_failure_case_summary:
     with end_date:
         end_date = streamlit.date_input('📅 End date', value='2025-09-05')  # today
 
+    # Overall with bar
+    streamlit.subheader('All Team')
     dataframe = business.get_failure_summary_grouped_by_service(start_date=start_date, end_date=end_date)
 
     if dataframe.empty:
@@ -48,11 +54,12 @@ if page == all_team_failure_case_summary:
             x='service_team',
             y='fail_count',
             color='service_team',
-            color_discrete_sequence=plotly.colors.qualitative.Pastel2,
+            color_discrete_sequence=plotly.colors.cyclical.Twilight,
             title=f'{start_date} - {end_date}',
             text='fail_count'
         )
         figure.update_layout(showlegend=False)
         streamlit.plotly_chart(figure_or_data=figure, use_container_width=True)
 
-# endregion [Failure Count by Service Team]
+
+# endregion [All Team Failure Case Summary]
