@@ -2,7 +2,7 @@ import psycopg2
 import logging
 
 
-class PostgresHelper:
+class PostgresSQLHelper:
     def __init__(self, config: str):
         try:
             self.connection = psycopg2.connect(
@@ -17,22 +17,21 @@ class PostgresHelper:
             logging.error(f'postgres connection failed: {e}')
             raise
 
-    def query(self, command: str, fetchall: bool = False, params: tuple = None):
-        """SELECT."""
+    def execute(self, sql: str, fetchall: bool = False, params: tuple = None):
+        """SELECT, INSERT, UPDATE, DELETE """
         try:
-            with self.connection.cursor() as cur:
-                cur.execute(command, params)
-                return cur.fetchall() if fetchall else cur.fetchone()
-            return record
-        except Exception as e:
-            logging.error(f'postgres query failed: {e}')
+            with self.connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                if fetchall is True:
+                    result = cursor.fetchall()
+                elif fetchall is False:
+                    result = cursor.fetchone()
+                else:
+                    result = None
 
-    def execute(self, command: str, params: tuple = None):
-        """INSERT, UPDATE, DELETE."""
-        try:
-            with self.connection.cursor() as cur:
-                cur.execute(command, params)
-            self.connection.commit()
+                self.connection.commit()
+                return result
+
         except Exception as e:
             self.connection.rollback()
             logging.error(f'postgres execute failed: {e}')
