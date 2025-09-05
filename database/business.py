@@ -4,7 +4,7 @@ from database.config import SDETDatabase
 from database.postgresql_helper import PostgresSQLHelper
 
 
-class Target:
+class BusinessLogic:
     def __init__(self):
         self.db = PostgresSQLHelper(config=SDETDatabase)
 

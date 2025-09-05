@@ -19,3 +19,18 @@ run-prod:
 	docker image prune -f
 	docker rmi $(DOCKER_IMAGE_TAG) || echo "⚠️ Image not found or in use"
 	@echo "========== Docker Compose Process Complete =========="
+
+.PHONY: run-dev
+run-dev:
+	@echo "========== Starting Docker Compose Process =========="
+	@echo "========== 1. Stopping and removing containers, and cleaning up unused images =========="
+	docker-compose -f $(DOCKER_COMPOSE_FILE_DEV) down --remove-orphans
+	docker image prune -f
+	@echo "========== 2. Building and starting the Docker service ($(DOCKER_SERVICE_NAME)) =========="
+	docker-compose -f $(DOCKER_COMPOSE_FILE_DEV) build --no-cache
+	docker-compose -f $(DOCKER_COMPOSE_FILE_DEV) up -d
+	@echo "========== 3. Checking the status of the Docker service ($(DOCKER_SERVICE_NAME)) =========="
+	docker-compose -f $(DOCKER_COMPOSE_FILE_DEV) ps
+	docker image prune -f
+	docker rmi $(DOCKER_IMAGE_TAG) || echo "⚠️ Image not found or in use"
+	@echo "========== Docker Compose Process Complete =========="

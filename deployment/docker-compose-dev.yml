@@ -25,6 +25,8 @@ services:
       context: ..
       dockerfile: deployment/Dockerfile
     container_name: automation_test_result_dashboard_service
+    env_file:
+      - ./.env
     depends_on:
       - postgres
     environment:
@@ -32,7 +34,6 @@ services:
       POSTGRES_USER: sdet
       POSTGRES_PASSWORD: 1234
       POSTGRES_HOST: postgres
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
     ports:
       - '8501:8501'
     volumes:
