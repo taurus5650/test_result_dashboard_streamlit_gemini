@@ -22,11 +22,11 @@ Built with Streamlit + PostgreSQL, this tool helps QA and dev teams quickly unde
 ## 🧠 Business Value
 
 This dashboard helps engineering teams to:
-*   **Monitor Testing Quality**: Track fail trends and find unstable test cases over time.
-*   **Catch CI Failures Quickly**: View automation results from all services in one place.
-*   **Speed Up Failure Debugging**: Use LLMs (Gemini, OpenAI) to analyze failed logs and errors.
-*   **Focus on Important Failures**: Easily see P0/P1 failures and reduce noise from flaky tests.
-*   **Improve Team Visibility**: QA, Dev, and PMs all share the same clear testing overview.
+*   **Monitor Testing Quality** – Track fail trends and find unstable test cases over time.
+*   **Catch CI Failures Quickly** – View automation results from all services in one place.
+*   **Speed Up Failure Debugging** – Use LLMs (Gemini, OpenAI) to analyze failed logs and errors.
+*   **Focus on Important Failures** – Easily see P0/P1 failures and reduce noise from flaky tests.
+*   **Improve Team Visibility** – QA, Dev, and PMs all share the same clear testing overview.
 
 
 ## 🛠️ Tech Stack
