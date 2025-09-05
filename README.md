@@ -10,7 +10,7 @@ Built with Streamlit + PostgreSQL, this tool helps QA and dev teams quickly unde
 ![overview.png](readme/overview.png)
 
 ### Insights (AI Analysis / Failed Case Details)
-![insight.png](readme/insight.png)
+![Insights.png](readme/Insights.png)
 
 ## ✨ Features
 
