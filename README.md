@@ -1,8 +1,7 @@
 # Automation Test Result Dashboard
 
-A lightweight web dashboard to view and analyze automation test results. <br>
-Built with Streamlit + PostgreSQL, this tool helps QA and dev teams quickly understand test quality and failures.
-
+A lightweight dashboard to view and analyze test automation results. <br> 
+Built with Streamlit + PostgreSQL, and powered by AI (Gemini) to help debug test failures faster.
 
 ## 💫 Result
 
