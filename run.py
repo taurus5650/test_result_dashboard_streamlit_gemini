@@ -6,6 +6,7 @@ import streamlit
 
 from database.business import BusinessLogic
 from llm.cache import get_ai_summary_cached
+import pandas
 
 
 class StreamLitPage:
@@ -16,7 +17,7 @@ class StreamLitPage:
         self.biz = BusinessLogic()
 
         self.page_handlers = {
-            "All Team Failure Case Summary": self.all_team_failure_case_summary,
+            "Failure Overview": self.failure_overview,
             "Failure Insights": self.failure_insights
         }
 
@@ -33,7 +34,7 @@ class StreamLitPage:
         last_seven_day = today - datetime.timedelta(days=7)
         return today, last_seven_day
 
-    def all_team_failure_case_summary(self):
+    def failure_overview(self):
 
         start_date, end_date = streamlit.columns(2)
         with start_date:
@@ -47,17 +48,60 @@ class StreamLitPage:
             streamlit.warning('No failure data found.')
             return
 
+        # region [Failure Summary by Team]
+        expected_teams = self.biz.get_all_service_teams()['service_team'].unique()
+        dataframe = dataframe.set_index('service_team').reindex(expected_teams, fill_value=0).reset_index() # Fill 0
         figure = plotly.bar(
             data_frame=dataframe,
             x='service_team',
             y='fail_count',
             color='service_team',
-            color_discrete_sequence=plotly.colors.cyclical.Twilight,
-            title=f'{start_date} - {end_date}',
+            color_discrete_sequence=plotly.colors.qualitative.T10,
+            title=f'Failure Summary by Team ({start_date} - {end_date})',
             text='fail_count'
         )
         figure.update_layout(showlegend=False)
         streamlit.plotly_chart(figure_or_data=figure, use_container_width=True)
+        # endregion [Failure Summary by Team]
+
+        # region [Daily Failures by Team]
+        all_details = []
+        for team in dataframe['service_team'].unique():
+            dataframe_team = self.biz.get_failure_details_by_team(
+                service_team=team,
+                start_date=start_date,
+                end_date=end_date
+            )
+            all_details.append(dataframe_team)
+
+        full_dataframe = pandas.concat(all_details)
+        full_dataframe['date'] = pandas.to_datetime(full_dataframe['timestamp']).dt.date
+
+        fail_by_day_team = (
+            full_dataframe.groupby(['service_team', 'date'])
+            .size()
+            .reset_index(name='fail_count')
+        )
+        all_dates = pandas.date_range(start=start_date, end=end_date, freq='D').date
+        all_teams = fail_by_day_team['service_team'].unique()
+
+        grid = pandas.MultiIndex.from_product(
+            [all_teams, all_dates],
+            names=['service_team', 'date']
+        )
+
+        dataframe_filled = fail_by_day_team.set_index(['service_team', 'date']).reindex(grid, fill_value=0).reset_index()
+        figure = plotly.bar(
+            data_frame=dataframe_filled,
+            x='date',
+            y='fail_count',
+            color='service_team',
+            color_discrete_sequence=plotly.colors.cyclical.Twilight,
+            barmode='group',
+            title=f'Daily Failures by Team ({start_date} - {end_date})',
+        )
+        streamlit.plotly_chart(figure, use_container_width=True)
+        # endregion [Daily Failures by Team]
 
     def failure_insights(self):
 
