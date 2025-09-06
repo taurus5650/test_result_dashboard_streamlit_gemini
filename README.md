@@ -6,12 +6,12 @@ Built with Streamlit + PostgreSQL, and powered by AI (Gemini) to help debug test
 ## 💫 Result
 
 ### Overview
-![overview.png](readme/overview.png)
+![overview.jpg](readme/overview.jpg)
 
 ### Insights (AI Analysis / Failed Case Details)
-![Insights.png](readme/Insights.png)
+![insights.png](readme/insights.png)
 
-## ✨ Features
+## ✨ Feature
 
 *   **Test Result Centralization** – See results from all services in one place
 *   **Interactive UI** – A user-friendly web interface to view and filter test execution data
@@ -33,6 +33,9 @@ This dashboard helps engineering teams to:
 *   **Backend / Dashboard**: Python 3.13, Streamlit
 *   **Database**: PostgreSQL
 *   **Containerization**: Docker, Docker Compose
+
+## 🪧 Diagram
+![diagram.png](readme/diagram.png)
 
 ## 🏗️ Project Structure
 
