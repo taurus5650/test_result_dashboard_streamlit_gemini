@@ -9,7 +9,7 @@ Built with Streamlit + PostgreSQL, and powered by AI (Gemini) to help debug test
 ![overview.jpg](readme/overview.jpg)
 
 ### Insights (AI Analysis / Failed Case Details)
-![insights.png](readme/insights.png)
+![insights.jpg](readme/insights.jpg)
 
 ## ✨ Feature
 
