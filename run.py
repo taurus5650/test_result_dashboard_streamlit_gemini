@@ -42,7 +42,10 @@ class StreamLitPage:
         with end_date:
             end_date = streamlit.date_input(label='End date', value='2025-09-07')  # self.common_value.today
 
-        dataframe = self.biz.get_failure_summary_grouped_by_service(start_date=start_date, end_date=end_date)
+        dataframe = self.biz.get_failure_summary_grouped_by_service(
+            start_date=start_date,
+            end_date=end_date + datetime.timedelta(days=1)
+        )
 
         if dataframe.empty:
             streamlit.warning('No failure data found.')
@@ -70,7 +73,7 @@ class StreamLitPage:
             dataframe_team = self.biz.get_failure_details_by_team(
                 service_team=team,
                 start_date=start_date,
-                end_date=end_date
+                end_date=end_date + datetime.timedelta(days=1)
             )
             all_details.append(dataframe_team)
 
@@ -114,16 +117,16 @@ class StreamLitPage:
 
         start_date, end_date = streamlit.columns(2)
         with start_date:
-            start_date = streamlit.date_input(label='Start date', value='2025-09-01')  # elf.common_value.last_seven_day
+            start_date = streamlit.date_input(label='Start date', value='2025-09-02')  # elf.common_value.last_seven_day
         with end_date:
-            end_date = streamlit.date_input(label='End date', value='2025-09-03')  # self.common_value.today
+            end_date = streamlit.date_input(label='End date', value='2025-09-02')  # self.common_value.today
 
         expand_all = streamlit.checkbox(label='Expand Test Cases', value=False)
 
         dataframe = self.biz.get_failure_details_by_team(
             service_team=service_team,
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date + datetime.timedelta(days=1)
         )
 
         if dataframe.empty:

@@ -24,7 +24,8 @@ class BusinessLogic:
                 COUNT(*) AS fail_count
             FROM automation_test_result,
                 jsonb_array_elements(failure_records) AS failure_record
-            WHERE create_time BETWEEN %s AND %s
+            WHERE create_time >= %s
+                AND create_time < %s 
             GROUP BY service_team
             ORDER BY fail_count DESC;
         """)
@@ -44,7 +45,8 @@ class BusinessLogic:
             FROM automation_test_result,
                 jsonb_array_elements(failure_records) AS failure_record
             WHERE service_team = %s
-                AND start_time BETWEEN %s AND %s
+                AND start_time >= %s
+                AND start_time < %s 
                 AND jsonb_array_length(failure_records) > 0
             ORDER BY start_time DESC;
         """)

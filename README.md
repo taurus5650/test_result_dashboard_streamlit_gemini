@@ -117,9 +117,8 @@ INSERT INTO automation_test_result (service, service_team, request_id, is_rerun,
 ## 🔍 Future Plans / Roadmap
 
 - Login & Team-level access control
-- Trend charts grouped by tag / test suite / branch
+- Trend charts grouped by tag / test suite
 - Slack / Email alert integration
-- Click-to-Rerun Failed Test (via CI/CD webhook)
 - Historical comparison (e.g., what changed since last run)
 - Multi-environment support (test, uat, staging, prod)
 - Full-text search in error messages
