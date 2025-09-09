@@ -3,6 +3,8 @@
 A lightweight dashboard to view and analyze test automation results. <br> 
 Built with Streamlit + PostgreSQL, and powered by AI (Gemini) to help debug test failures faster.
 
+* _Medium Article:_ https://medium.com/ai-in-plain-english/less-guessing-a-test-results-dashboard-that-explains-failures-with-ai-731f7747ab2a
+
 ## 💫 Result
 
 ### Overview
